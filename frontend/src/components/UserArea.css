@@ -1,0 +1,11 @@
+/* UserArea.css */
+.user-area-container {
+    border: 2px solid #ddd;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+
+  
