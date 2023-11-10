@@ -1,11 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '../firebase/firebaseConfig';
-import { AuthContext } from '../App';
+import { AuthContext } from '../App'; // ปรับแต่งตามต้องการ
 
-// สร้าง Component LoginFormEmail
 const LoginFormEmail = () => {
-  // ใช้ useContext เพื่อดึงข้อมูล state และ dispatch จาก Context
   const { authState, authDispatch } = useContext(AuthContext);
   
   // สร้าง state เพื่อเก็บค่า email, password, และ error

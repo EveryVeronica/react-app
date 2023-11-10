@@ -1,24 +1,22 @@
+// InformationDisplayArea.js
 import React, { useContext } from 'react';
-import DataHtml from '../displayArea/DataHtml';
-import ReadHtml from '../displayArea/ReadHtml';
+import { DataContext } from '../contexts';
 
-import { DataContext } from '../App';
+import ReadHtml from '../displayArea/ReadHtml';  // ตรวจสอบว่าชื่อไฟล์และตำแหน่งถูกต้อง
+
 
 const InformationDisplayArea = () => {
+  const { dataState } = useContext(DataContext);
 
-    const { dataState, dataDispatch } = useContext(DataContext);
+  if (!dataState) {
+    return <div>No data available</div>;
+  }
 
-
-
-
-    
   return (
-    <div className="area-grid-container">
-    <div className="area-grid-item item1-area">{/* <DataHtml/> */}</div>
-      <div className="area-grid-item item2-area">{ <ReadHtml data={dataState} /> }</div>
-      <div className="area-grid-item item3-area">3</div>
-      <div className="area-grid-item item4-area">4</div>
-      <div className="area-grid-item item5-area">5</div>
+    <div>
+      {/* แสดงผลข้อมูลที่ได้จาก HTML */}
+
+      {<ReadHtml data={ dataState} />}
     </div>
   );
 };
