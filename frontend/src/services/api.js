@@ -42,9 +42,9 @@ export const getData = async (token) => {
   }
 };
 
-export const saveData = async (token, data) => {
+export const saveData = async (token,keyid,data) => {
   try {
-    const response = await axios.post(`${baseURL}/saveData`, { data }, {
+    const response = await axios.post(`${baseURL}/saveData`, { keyid,data }, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,

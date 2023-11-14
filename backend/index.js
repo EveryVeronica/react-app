@@ -88,7 +88,7 @@ app.get('/logged', authenticateToken, async (req, res) => {
 app.post('/saveData', authenticateToken, async (req, res) => {
   try {
     const user = req.user;
-    const { data } = req.body;
+    const {keyid,data } = req.body;
 
     if (!data) {
       return res.status(400).json({ message: 'Data is required.' });
@@ -97,7 +97,11 @@ app.post('/saveData', authenticateToken, async (req, res) => {
     const database = client.db('customer_data');
     const collection = database.collection('user_data');
 
-    const result = await collection.insertOne({ user_id: user.uid, data });
+    const result = await collection.insertOne({
+      user_id: user.uid,
+      keyid:keyid,
+      data
+    });
 
     res.status(201).json({ message: 'Data saved successfully.', insertedId: result.insertedId });
   } catch (error) {

@@ -27,6 +27,8 @@ function ActivityList() {
 
   useEffect(() => {
     if (ResponseState) {
+      setItems([])
+
       const json = ResponseState.data;
 
       json.forEach((dataObj, index) => {

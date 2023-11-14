@@ -1,13 +1,14 @@
 import React from 'react';
 import './ReadHtml.css';
 
-const ReadHtml = ({ data }) => {
+const ReadHtml = ({ data,set}) => {
   if (!data) {
     return <div>No data available</div>;
   }
 
+
   const items = data.get("text3").map((item, idx) => (
-    <div className="grid-container" key={idx}>
+    <div className="grid-container" key={idx} style={set === true ? { backgroundColor: "red" } : { backgroundColor: "blue" }}>
       <div className="item1">Program</div>
       <div className="item2">{data.get("text2")[idx]}</div>
       <div className="item3">{data.get("text3")[idx]}</div>

@@ -5,8 +5,10 @@ import HandleButton from './templates/HandleButton';
 import LoginFormEmail from './templates/LoginFormEmail';
 import UserArea from './components/UserArea';
 import InformationDisplayArea from './templates/InformationDisplayArea';
-import { DataContext, AuthContext, ResponseContext } from './contexts';
-import ActivityList from "./templates/ActivityList";
+import { DataContext, AuthContext, ResponseContext, StylesContext } from './contexts';
+
+import ActivityListItem from "./templates/ActivityListItem";
+
 
 // ฟังก์ชัน reducer สำหรับการจัดการ state ของ authentication
 function reducer(state, action) {
@@ -27,9 +29,14 @@ function checkActionType(state, action) {
   }
 
   if (action.type === "text") {
-    return null;
+    return action.payload;
+  }
+
+  if (action.type === "data") {
+    return action.payload;
   }
   return state;
+  
 }
 
 
@@ -52,6 +59,8 @@ const App = () => {
   const [authState, authDispatch] = useReducer(reducer, null);
   const [dataState, dataDispatch] = useReducer(checkActionType, null);
   const [ResponseState, ResponseDispatch] = useReducer(examine, null);
+  const [Styles, setStyles] = useState(null);
+
 
   const [userData, setUserData] = useState(null);
 
@@ -62,15 +71,16 @@ const App = () => {
   return (
     <AuthContext.Provider value={{ authState, authDispatch }}>
       <DataContext.Provider value={{ dataState, dataDispatch }}>
-        <ResponseContext.Provider value = {{ResponseState,ResponseDispatch}}>
+        <ResponseContext.Provider value={{ ResponseState, ResponseDispatch }}>
+        <StylesContext.Provider value={{Styles, setStyles}}>
         <div className="App">
           <div className="app-grid-container">
             <div className="app-grid-item item1-app"><HandleButton /></div>
             <div className="app-grid-item item2-app"></div>
             <div className="app-grid-item item3-app">
                 {userData ? <UserArea userData={userData} /> : null} {/* แสดง UserArea ถ้ามีข้อมูลผู้ใช้ */}
-                
-              <ActivityList/>
+      
+              <ActivityListItem/>
 
 
             </div>
@@ -80,7 +90,8 @@ const App = () => {
             </div>
             <div className="app-grid-item item5-app">5</div>
           </div>
-          </div>
+            </div>
+            </StylesContext.Provider>
           </ResponseContext.Provider>
       </DataContext.Provider>
     </AuthContext.Provider>
