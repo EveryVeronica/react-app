@@ -1,7 +1,7 @@
 import React from 'react';
-import './ReadHtml.css';
+import './CuttingHtml.css';
 
-const ReadHtml = ({ data,set}) => {
+const CuttingHtml = ({ data,set}) => {
   if (!data) {
     return <div>No data available</div>;
   }
@@ -27,4 +27,4 @@ const ReadHtml = ({ data,set}) => {
   return <div>{items}</div>;
 };
 
-export default ReadHtml;
+export default CuttingHtml;

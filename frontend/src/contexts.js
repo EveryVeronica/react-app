@@ -2,10 +2,11 @@
 import React from 'react';
 
 const AuthContext = React.createContext();
-const DataContext = React.createContext();
+const CuttingContext = React.createContext();
+const ToollistContext = React.createContext();
 const ResponseContext = React.createContext();
 const StylesContext = React.createContext();
 
 
 
-export { AuthContext, DataContext ,ResponseContext,StylesContext};
+export { AuthContext, CuttingContext,ToollistContext,ResponseContext,StylesContext};

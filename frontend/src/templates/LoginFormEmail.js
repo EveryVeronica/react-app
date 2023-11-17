@@ -5,25 +5,20 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
-import { AuthContext, DataContext, ResponseContext } from "../App"; // ปรับแต่งตามต้องการ
-import axios from "axios";
-import RegisterForm from "../templates/RegisterForm ";
+import { AuthContext, CuttingContext, ResponseContext } from "../App"; // ปรับแต่งตามต้องการ
+import './LoginFormEmail.css'
+
 import { getData, logged } from "../services/api";
 
-
 const LoginFormEmail = () => {
-  const { authState, authDispatch} = useContext(AuthContext);
-  const { dataDispatch } = useContext(DataContext);
+  const { authState, authDispatch } = useContext(AuthContext);
+  const { cuttingDispatch } = useContext(CuttingContext);
   const { ResponseDispatch } = useContext(ResponseContext);
 
   // สร้าง state เพื่อเก็บค่า email, password, และ error
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-
-
-
-
 
   const handleLogin = async () => {
     try {
@@ -32,23 +27,23 @@ const LoginFormEmail = () => {
         setError("Please enter both email and password.");
         return;
       }
-  
+
       // ตรวจสอบว่า email ที่กรอกเป็น Gmail หรือไม่
       if (!isEmailValid(email)) {
         setError("Please enter a valid Gmail address.");
         return;
       }
-  
+
       // ล็อกอินผู้ใช้
       const response = await signInWithEmailAndPassword(auth, email, password);
       console.log("User logged in:", response.user.uid);
-    //  console.log('sssssssssssssssss'+await response.user.getIdToken())
+      //  console.log('sssssssssssssssss'+await response.user.getIdToken())
       // ล้างค่า error ในกรณีที่ล็อกอินสำเร็จ
       setError(null);
-       
+
       // ส่ง Token ไปที่ /logged เมื่อล็อกอินสำเร็จ
-    await  sendTokenToServer(await response.user.getIdToken());
-  
+      await sendTokenToServer(await response.user.getIdToken());
+
       // ทำตามความต้องการ เช่น นำผู้ใช้ไปที่หน้า Dashboard, set user, ฯลฯ
       console.log("User logged in:", response.user.uid);
       console.log("Login successful! Welcome, " + response.user.email);
@@ -57,68 +52,33 @@ const LoginFormEmail = () => {
       setError("Login failed. Please check your credentials and try again.");
     }
   };
-  
-// ฟังก์ชันสำหรับส่ง Token ไปที่ /logged
-const sendTokenToServer = async (token) => {
-  try {
-    const userToken = await auth.currentUser.getIdToken();
-    const responseData = await getData(userToken);
 
-    // ตรวจสอบว่ามีข้อมูลที่ได้จากการเรียก API หรือไม่
-    if (responseData) {
-      console.log('Data from /logged API:', responseData);
+  // ฟังก์ชันสำหรับส่ง Token ไปที่ /logged
+  const sendTokenToServer = async (token) => {
+    try {
+      const userToken = await auth.currentUser.getIdToken();
+      const responseData = await getData(userToken);
 
+      // ตรวจสอบว่ามีข้อมูลที่ได้จากการเรียก API หรือไม่
+      if (responseData) {
+        console.log("Data from /logged API:", responseData);
 
+        await ResponseDispatch({
+          type: "login",
+          payload: responseData,
+        });
 
-
-     await ResponseDispatch({
-        type: "login",
-        payload: responseData,
-      });
-
-
-
-
-
-
-
-
-
-
-
-
-
-      // ทำสิ่งที่คุณต้องการกับข้อมูลที่ได้ เช่นแสดงผลทาง UI
-      // ตัวอย่าง: แสดงชื่อผู้ใช้ที่ได้จาก /logged API
-      alert(`Welcome, ${responseData.username}!`);
-    } else {
-      console.log('No data from /logged API');
+        // ทำสิ่งที่คุณต้องการกับข้อมูลที่ได้ เช่นแสดงผลทาง UI
+        // ตัวอย่าง: แสดงชื่อผู้ใช้ที่ได้จาก /logged API
+        alert(`Welcome, ${responseData.username}!`);
+      } else {
+        console.log("No data from /logged API");
+      }
+    } catch (error) {
+      console.error("Error in sendTokenToServer:", error.message);
+      // จัดการข้อผิดพลาดตามที่คุณต้องการ
     }
-  } catch (error) {
-    console.error('Error in sendTokenToServer:', error.message);
-    // จัดการข้อผิดพลาดตามที่คุณต้องการ
-  }
-};
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  };
 
   // ฟังก์ชันสำหรับการล็อกเอาท์
   const handleLogout = () => {
@@ -127,7 +87,7 @@ const sendTokenToServer = async (token) => {
       .then(() => {
         console.log("Sign-out successful.");
         // ทำตามความต้องการหลังจาก logout
-        dataDispatch({
+        cuttingDispatch({
           type: "html",
           payload: null,
         });
@@ -144,8 +104,6 @@ const sendTokenToServer = async (token) => {
     const gmailRegex = /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*@gmail\.com$/;
     return gmailRegex.test(email);
   };
-
-
 
   // useEffect สำหรับตรวจสอบการเปลี่ยนแปลงใน authentication state
   useEffect(() => {
@@ -175,34 +133,41 @@ const sendTokenToServer = async (token) => {
   // ตรวจสอบว่ามี authentication state หรือไม่
   if (authState) {
     // ถ้ามี authentication state แสดงปุ่ม Log Out
-    return <button onClick={handleLogout}>Log Out</button>;
+    return (<><button className="login-form btn-logout" onClick={handleLogout}>LogOut</button> <div className="login-form"></div></>)
   } else {
     // ถ้าไม่มี authentication state แสดงฟอร์มสำหรับล็อกอิน
     return (
-      <div>
-        <h2>Login</h2>
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+    <>
+       
+        <div className="login-form label"> { error && <p style={{ color: "red" }}>{error}</p> }</div>
+      <div className="login-form label-email">Email:</div>
+       <input
+        className="login-form input-email"
+      type="email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+    />
+      <div className="login-form label-password">Password:</div>
+       <input
+           className="login-form input-password"
+      type="password"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+    />
+      <button className="login-form btn-login" onClick={handleLogin}>Login</button>
 
-        <label>Password:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        {/* แสดงข้อความ error ถ้ามี */}
-        {error && <p style={{ color: "red" }}>{error}</p>}
-
-        <button onClick={handleLogin}>Login</button>
-        {<RegisterForm/>}
-      </div>
-
+  
       
+      <div className="login-form"></div>
+       
+
+      </>
+       
+
+
+
+       
+
     );
   }
 };

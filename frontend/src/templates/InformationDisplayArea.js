@@ -1,29 +1,32 @@
 // InformationDisplayArea.js
 import React, { useContext } from 'react';
-import { DataContext, StylesContext } from '../contexts';
+import { CuttingContext, StylesContext, ToollistContext } from '../contexts';
 
-import ReadHtml from '../components/ReadHtml';  // ตรวจสอบว่าชื่อไฟล์และตำแหน่งถูกต้อง
+import CuttingHtml from '../components/CuttingHtml';  // ตรวจสอบว่าชื่อไฟล์และตำแหน่งถูกต้อง
+import ToollistHtml from '../components/ToollistHtml';
 
 
 
 const InformationDisplayArea = () => {
-  const { dataState } = useContext(DataContext);
-  const {Styles, setStyles} = useContext(StylesContext);
+  const { cuttingState } = useContext(CuttingContext);
+  const { toollistState, toollistDispatch} = useContext(ToollistContext);
+
+  const {styleAction, SetStyleAction} = useContext(StylesContext);
 
 
 
 
 
 
-  if (!dataState) {
-    return <div>No data available</div>;
-  }
+
 
   return (
     <div>
       {/* แสดงผลข้อมูลที่ได้จาก HTML */}
        
-      {<ReadHtml data={dataState} set={Styles} />}
+      {cuttingState ? <CuttingHtml data={cuttingState} set={styleAction} /> : null }
+      {toollistState ? <ToollistHtml data={toollistState} set={styleAction} /> : null}
+
     </div>
   );
 };

@@ -1,0 +1,56 @@
+.login-form {
+
+
+    border: none;
+    outline: none;
+    height: 20px;
+   margin-right: 5px;
+
+  }
+
+  .label{
+ 
+    grid-column: 1 ;
+
+  }
+  .label-email{
+    background-color: #2141f3;
+    grid-column: 2 ;
+
+  }
+
+  .input-email{
+    background-color: #d021f3;
+    grid-column: 3 ;
+    padding-left: 5px;
+    padding-right: 5px;
+
+  }
+
+  .label-password{
+    background-color: #7c21f3;
+    grid-column: 4 ;
+
+
+  }
+
+
+  .input-password{
+    background-color: #4821f3;
+    grid-column: 5 ;
+    padding-left: 5px;
+    padding-right: 5px;
+
+
+  }
+
+  .btn-login{
+    background-color: #f32144;
+    grid-column: 6 ;
+ 
+  }
+  .btn-logout{
+    background-color: rgb(243, 117, 33);
+    grid-column: 6 ;
+ 
+  }

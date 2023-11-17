@@ -58,10 +58,31 @@ const authenticateToken = (req, res, next) => {
   }
 
   const token = authorizationHeader.split(' ')[1];
-  console.log('Token:', token);
+ // console.log('Token:', token);
 
   admin.auth().verifyIdToken(token)
     .then((decodedToken) => {
+    // รายชื่อ ผู้ให้บริการ cadcame
+    const Provider = new Map([
+      ['veronica', 'veronica.in.th@gmail.com'],
+      ['every', 'every.internet.01@gmail.com']
+  ]);
+  
+  const providerEmails = Array.from(Provider.values());
+  
+  if (providerEmails.includes(decodedToken.email)) {
+      console.log(`${decodedToken.email} เป็นผู้ให้บริการ`);
+      decodedToken.type = 'Admin';
+      decodedToken.supplier = null;
+  } else {
+      console.log(`${decodedToken.email} ไม่ได้รับสิทธิ์เป็นผู้ให้บริการ`);
+      decodedToken.type = 'User';
+      decodedToken.supplier = Provider;
+  }
+  
+
+console.log('decodedToken:', decodedToken);
+
       req.user = decodedToken;
       next();
     })
@@ -118,10 +139,38 @@ app.get('/user_data', authenticateToken, async (req, res) => {
     const database = client.db('customer_data');
     const collection = database.collection('user_data');
 
-    // ดึงข้อมูลที่ตรงกับ user_id
-    const result = await collection.find({ user_id: user.uid }).toArray();
 
-    res.status(200).json({ data: result });
+if (user.type === 'Admin') {
+  const result = await collection.find().toArray();
+
+
+  res.status(200).json({
+    user_data: result,
+    type: 'Admin',
+    supplier: null
+  });
+
+} else {
+      // ดึงข้อมูลที่ตรงกับ user_id
+  const result = await collection.find({ user_id: user.uid }).toArray();
+
+// แปลง Map object เป็น JavaScript object
+const supplierObject = Object.fromEntries(user.supplier);
+
+  res.status(200).json({
+    user_data: result,
+    type: 'User',
+    supplier: supplierObject
+  });
+
+}
+
+
+
+
+
+
+
   } catch (error) {
     console.error('Error during data retrieval:', error);
     res.status(500).json({ message: 'Internal Server Error' });

@@ -3,28 +3,20 @@ import './UserArea.css'; // นำเข้าไฟล์ CSS
 
 const UserArea = ({ userData}) => {
   return (
-    <div className="user-area-container">
-      <h2>User Information</h2>
-      <div>
-        <strong>UID:</strong> {userData.uid}
-      </div>
-      <div>
-        <strong>Avatar:</strong> <img src={userData.avatar} alt="Avatar" />
-      </div>
-      <div>
-        <strong>First Name:</strong> {userData.firstName}
-      </div>
-      <div>
-        <strong>Last Name:</strong> {userData.lastName}
-      </div>
-      <div>
-        <strong>Phone Number:</strong> {userData.phoneNumber}
-      </div>
-      <div>
-        <strong>Email:</strong> {userData.email}
-      </div>
 
-    </div>
+    <>
+      <img className="login-form user-avatar" src={userData.avatar} alt="Avatar" />
+
+    <div className="login-form user-first-name">[]:{userData.firstName}</div>
+    <div className="login-form user-last-name">[]:{userData.lastName}</div>
+    <div className="login-form user-email">[Email:][{userData.email}]</div>
+      <div className="login-form user-phone">[]:{userData.phoneNumber}</div>
+    
+     
+      
+      </>
+
+
   );
 };
 

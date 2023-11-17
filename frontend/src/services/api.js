@@ -35,6 +35,7 @@ export const getData = async (token) => {
         'Authorization': `Bearer ${token}`,
       },
     });
+
     return response.data;
   } catch (error) {
     console.error('Error in getData:', error.message);
