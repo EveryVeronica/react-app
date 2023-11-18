@@ -8,7 +8,7 @@ import { auth } from "../firebase/firebaseConfig";
 import { AuthContext, CuttingContext, ResponseContext } from "../App"; // ปรับแต่งตามต้องการ
 import './LoginFormEmail.css'
 
-import { getData, logged } from "../services/api";
+import { getData } from "../services/api";
 
 const LoginFormEmail = () => {
   const { authState, authDispatch } = useContext(AuthContext);
@@ -68,9 +68,6 @@ const LoginFormEmail = () => {
           payload: responseData,
         });
 
-        // ทำสิ่งที่คุณต้องการกับข้อมูลที่ได้ เช่นแสดงผลทาง UI
-        // ตัวอย่าง: แสดงชื่อผู้ใช้ที่ได้จาก /logged API
-        alert(`Welcome, ${responseData.username}!`);
       } else {
         console.log("No data from /logged API");
       }
@@ -128,7 +125,7 @@ const LoginFormEmail = () => {
 
     // คืนฟังก์ชัน unsubscribe เพื่อทำความสะอาด
     return () => unsubscribe();
-  }, [auth, authDispatch]);
+  }, [authDispatch]);
 
   // ตรวจสอบว่ามี authentication state หรือไม่
   if (authState) {

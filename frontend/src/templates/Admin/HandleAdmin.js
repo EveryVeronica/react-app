@@ -202,15 +202,36 @@ const HandleAdmin = () => {
         const cutting = JSON.stringify(Object.fromEntries(cuttingState));
         const toollist = JSON.stringify(Object.fromEntries(toollistState));
 
-
-
-
-
-        const keyid= projectname
-        const response = await saveData(userToken, keyid, {
+/* 
+        {
           cutting: cutting,
           toollist,toollist
-        });
+        }
+ */
+
+   
+        const response = await saveData(userToken, 
+        
+      {  
+        machine: {
+          permit: auth.currentUser.email,//อนุญาตใหผู้ให้บริการ
+          author:null,// ผู้แต่ง  สั่งการ 
+          customer: null, //หมายถึงลูกค้า ของเรา
+          heading:projectname, // ชื่อเรื่อง 
+          setup: {    //ข้อมูลการ การ setup
+            tools: toollist,
+            data_workpiece: null,
+            cutting:cutting
+          },
+          
+        }
+        }
+        
+        
+        
+        
+        
+        );
         console.log("Data saved successfully:", response);
       } else {
         console.log("Data saved Error:");

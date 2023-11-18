@@ -43,9 +43,28 @@ export const getData = async (token) => {
   }
 };
 
-export const saveData = async (token,keyid,data) => {
+export const saveData = async (token,data) => {
   try {
-    const response = await axios.post(`${baseURL}/saveData`, { keyid,data }, {
+    const response = await axios.post(`${baseURL}/saveData`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error in saveData:', error.message);
+    throw error;
+  }
+};
+
+
+
+
+
+export const reportMachine = async (token,data) => {
+  try {
+    const response = await axios.post(`${baseURL}/machine/setup/admin`, { data }, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,

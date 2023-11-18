@@ -14,8 +14,9 @@ import {
 } from "./contexts";
 
 import ActivityListItem from "./templates/ActivityListItem";
-import RegisterForm from "./templates/RegisterForm ";
+
 import HandleUser from "./templates/User/HandleUser";
+import OrderList from "./templates/Admin/OrderList";
 
 // ฟังก์ชัน reducer สำหรับการจัดการ state ของ authentication
 function reducer(state, action) {
@@ -60,13 +61,17 @@ const App = () => {
   const [authState, authDispatch] = useReducer(reducer, null);
   const [cuttingState, cuttingDispatch] = useReducer(checkActionType, null);
   const [toollistState, toollistDispatch] = useReducer(checkActionType, null);
-
   const [ResponseState, ResponseDispatch] = useReducer(examine, null);
   const [styleAction, SetStyleAction] = useState(null);
 
   const [UseType, setUseType] = useState("user");
 
   const [SupplierList, setSupplierList] = useState(null);
+  const [ Provider , setProvider ] = useState(null);
+
+
+
+  
 
   useEffect(() => {
     if (ResponseState) {
@@ -83,7 +88,12 @@ const App = () => {
 
   const HandleChooseSupplier = (e) => {
     let id = e.target.id;
-    alert(id);
+    alert('ผู้ใช้เลือก (Supplier):'+id);
+
+    setProvider(id)
+
+
+
   };
 
   return (
@@ -108,26 +118,29 @@ const App = () => {
                         ? SupplierList.map(([key, value]) => (
                             <button
                               key={key}
-                              id={key}
+                              id={value}
                               onClick={HandleChooseSupplier}
-                            >
-                              {" "}
-                              {key}
+                          >
+                            email: { value} <br></br>
+                         
+                              {key}=ว่าง
                             </button>
                           ))
                         : null}
                     </div>
 
                     <div>22</div>
-                    <div>33</div>
+                    <div>   {UseType === "Admin" ? <OrderList/> : null}  </div>
                   </div>
 
                   <div className="app-grid-item item4-app">
                     <ActivityListItem />
+
+
                   </div>
                   <div className="app-grid-item item5-app">
                     {/*     <RegisterForm /> */}
-                    <InformationDisplayArea />
+                    <InformationDisplayArea  provider={Provider}  />
                   </div>
                   <div className="app-grid-item item6-app">6</div>
                 </div>
