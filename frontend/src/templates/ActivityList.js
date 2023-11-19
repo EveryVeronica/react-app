@@ -19,7 +19,7 @@ function ActivityListRow({ resultMap, idx }) {
       <div className="item12">{resultMap.get("text12")[idx]}</div>
     </div>
   );
-}
+} 
 
 function ActivityList() {
   const { ResponseState } = useContext(ResponseContext);
